@@ -7,6 +7,7 @@ const Login = () => {
   const [exp, setExp] = useState("");
   const [edu, setEdu] = useState("");
   const [skill, setSkill] = useState("");
+  const [inter, setInter] = useState("");
 
   const changeEmail = (e) => {
     setEmail(e.target.value);
@@ -26,6 +27,9 @@ const Login = () => {
   const changeSkill = (e) => {
     setSkill(e.target.value);
   };
+  const changeInter = (e) => {
+    setInter(e.target.value);
+  };
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -38,28 +42,54 @@ const Login = () => {
 
   let generatePDF = () => {
     const doc = new jsPDF({
-      // orientation: "p",
+      // orientation: "portrait",
       // unit: "mm",
-      // format: [100, 100],
+      // format: a4,
     });
 
-    doc.setFontSize(20);
-    // doc.text(10, 20, "Name: " + name);
-    doc.text(`Name: \n${name}`, 10, 30);
-    // doc.text(10, 20, "Email: " + email);
-    doc.text(`Email: \n${email}`, 10, 50);
+    // doc.text(`Name: \n${name}`, 10, 30);
+    if (name) {
+      doc.setFontSize(20);
+      doc.setTextColor(255, 0, 0);
+      doc.text(`Name: `, 10, 30);
+      doc.setTextColor(0, 0, 0);
+      doc.setFontSize(15);
+      doc.text(`\n${name}`, 20, 30);
+    }
 
-    doc.setFontSize(15);
-    doc.text(`About Me: \n${intro}`, 10, 70);
+    // doc.text(`Email: \n${email}`, 10, 50);
+
+    if (email) {
+      doc.setFontSize(20);
+      doc.setTextColor(255, 0, 0);
+      doc.text(`Email: `, 10, 50);
+      doc.setTextColor(0, 0, 0);
+      doc.setFontSize(15);
+      doc.text(`\n${email}`, 20, 50);
+    }
+
+    // doc.setFontSize(15);
+    // doc.text(`About Me: \n${intro}`, 10, 70);
+
+    if (intro) {
+      doc.setFontSize(20);
+      doc.setTextColor(255, 0, 0);
+      doc.text(`About Me: `, 10, 70);
+      doc.setTextColor(0, 0, 0);
+      doc.setFontSize(15);
+      doc.text(` \n${intro}`, 20, 70);
+    }
 
     if (exp) {
-      doc.setFontSize(15);
+      doc.setFontSize(20);
+      doc.setTextColor(255, 0, 0);
       doc.text(`Experiance: `, 10, 90);
-      doc.setFontSize(12);
+      doc.setTextColor(0, 0, 0);
+      doc.setFontSize(15);
       const expPoints = exp.split("\n");
       let yPosition = 100;
       expPoints.forEach((point) => {
-        doc.text("\u2022 " + point, 10, yPosition);
+        doc.text("\u2022 " + point, 20, yPosition);
         yPosition += 10;
       });
     }
@@ -68,25 +98,44 @@ const Login = () => {
 
     // doc.text(`Education: ${edu}`, 10, 60);
     if (edu) {
-      doc.setFontSize(15);
+      doc.setFontSize(20);
+      doc.setTextColor(255, 0, 0);
       doc.text(`Education:`, 10, 130);
-      doc.setFontSize(12);
+      doc.setTextColor(0, 0, 0);
+      doc.setFontSize(15);
       const eduPoints = edu.split("\n");
       let yPosition = 140;
       eduPoints.forEach((point) => {
-        doc.text("\u2022 " + point, 10, yPosition);
+        // doc.setTextColor(255, 0, 0);
+        doc.text("\u2022 " + point, 20, yPosition);
         yPosition += 10;
       });
     }
 
     if (skill) {
-      doc.setFontSize(15);
+      doc.setFontSize(20);
+      doc.setTextColor(255, 0, 0);
       doc.text(`Skills:`, 10, 170);
-      doc.setFontSize(12);
+      doc.setTextColor(0, 0, 0);
+      doc.setFontSize(15);
       const skillPoints = skill.split("\n");
       let yPosition = 180;
       skillPoints.forEach((point) => {
-        doc.text("\u2022 " + point, 10, yPosition);
+        doc.text("\u2022 " + point, 20, yPosition);
+        yPosition += 10;
+      });
+    }
+
+    if (inter) {
+      doc.setFontSize(20);
+      doc.setTextColor(255, 0, 0);
+      doc.text(`Interest:`, 10, 210);
+      doc.setTextColor(0, 0, 0);
+      doc.setFontSize(15);
+      const interPoints = inter.split("\n");
+      let yPosition = 220;
+      interPoints.forEach((point) => {
+        doc.text("\u2022 " + point, 20, yPosition);
         yPosition += 10;
       });
     }
@@ -179,28 +228,67 @@ const Login = () => {
         />
         <br />
         <br />
+        <label>Interest</label>
+        <br />
+        <textarea
+          placeholder="Interest"
+          type="text"
+          onChange={changeInter}
+          value={inter}
+          name="inter"
+          required
+          autoFocus
+        />
+        <br />
+        <br />
         <input type="submit" />
       </form>
 
       <div className="display">
-        Name: {name}
+        Name:
+        <br />
+        {name}
         <br />
         <br />
-        Email: {email}
+        Email:
+        <br />
+        {email}
         <br />
         <br />
-        About Me: {intro}
+        About Me:
+        <br />
+        {intro}
         <br />
         <br />
-        Experiance: {exp}
+        Experiance:
         <br />
+        <ul>
+          {exp.split("\n").map((point, index) => (
+            <li key={index}>{point}</li>
+          ))}
+        </ul>
+        Education:
         <br />
-        Education: {edu}
+        <ul>
+          {edu.split("\n").map((point, index) => (
+            <li key={index}>{point}</li>
+          ))}
+        </ul>
+        Skills:
         <br />
+        <ul>
+          {skill.split("\n").map((point, index) => (
+            <li key={index}>{point}</li>
+          ))}
+        </ul>
+        Interest:
         <br />
-        Skills: {skill}
+        <ul>
+          {inter.split("\n").map((point, index) => (
+            <li key={index}>{point}</li>
+          ))}
+        </ul>
       </div>
-
       <button onClick={generatePDF}>Download</button>
     </div>
   );
